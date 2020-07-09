@@ -1,7 +1,7 @@
 import * as React from 'react';
 //use 'type' so there is not footprint on the code--does not compile to JS
 import type { IChirp } from '../utils/interfaces'
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Link } from 'react-router-dom';
 
 class Details extends React.Component<DetailsProps, DetailsState> {
     constructor(props: DetailsProps) {
@@ -23,9 +23,22 @@ class Details extends React.Component<DetailsProps, DetailsState> {
     render() {
         return (
 
+
             <section className="row justify-content-center mt-3">
-                <h1 className="display-1 text-primary text-center"> Details for {this.state.chirp?.name}!!</h1>
+                <div className="col-6">
+
+                    <h4 className= "text-center"> Name: {this.state.chirp?.name}!!</h4>
+                    <h4 className="text-center"> Chirp: {this.state.chirp?.text}!!</h4>
+
+                    <div className="d-flex align-items-center justify-content-between">
+                        <Link to='/'>&lt;&lt;Go Back</Link>
+                        <Link to={`/admin/${this.state.chirp?.id}`}>&gt;&gt;Edit/Delete Chirp</Link>
+                    </div>
+                </div>
+
+
             </section>
+
 
 
         );

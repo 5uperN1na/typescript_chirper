@@ -11,12 +11,12 @@ class Compose extends React.Component<ComposeProps, ComposeState> {
         };
     }
 
-    handleNameChange = (e: React.ChangeEvent<HTMLInputElement) => {
+    handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ name: e.target.value });
 
     }
 
-    handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement) => {
+    handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         this.setState({ text: e.target.value });
 
     }
