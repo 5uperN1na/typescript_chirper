@@ -73,14 +73,14 @@ class Admin extends React.Component<AdminProps, AdminState> {
             <section className="row justify-content-center mt-3">
                 <div className="col-md-8">
                     <form className="form-group p-3 border rounded-lg shadow-sm">
-                        <label htmlFor="name"> Name</label>
+                        <label htmlFor="name"> Who you are?</label>
                         <input value={this.state.name} onChange={this.handleNameChange} type="text" className="form-control my-1" />
-                        <label htmlFor="text"> Text</label>
+                        <label htmlFor="text"> Say what?</label>
                         <textarea value={this.state.text} onChange={this.handleTextChange} rows={10} className="form-control my-1" />
-                        <button onClick={this.handleEditChirp} className="btn btn-outline-primary btn-block mt-3 mx-auto w-50">Save</button>
-                        <button onClick={this.handleDeleteChirp} className="btn btn-outline-primary btn-block mt-3 mx-auto w-50">Delete</button>
-                        <Link to={`/details/${this.props.match.params.chirpid}`} className="btn btn-outline-primary btn-block mt-3 mx-auto w-50">Go Back</Link>
-
+                        <button onClick={this.handleEditChirp} className="btn btn-outline-success btn-block mt-2 mx-auto w-25">Save</button>
+                        <button onClick={this.handleDeleteChirp} className="btn btn-outline-danger btn-block mt-2 mx-auto w-25">Delete</button>
+                        <Link to={`/details/${this.props.match.params.chirpid}`} className="btn btn-outline-primary btn-block mt-2 mx-auto w-25">Go Back</Link>
+                       
                     </form>
                 </div>
             </section>

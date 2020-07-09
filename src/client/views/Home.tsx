@@ -25,12 +25,11 @@ class Home extends React.Component<HomeProps, HomeState> {
 
     }
 
-
     render() {
         return (
             <section className="row justify-content-center mt-3">
                 <div className="col-md-6">
-                    <ul className="list-group list-group-flush" >
+                    <ul className="list-group-item list-group-item" >
                         {this.state.chirps.map(chirp => {
                             return <li onClick={() => this.props.history.push(`/details/${chirp.id}`)} className="list-group-item py-3 hover-pt" key={`chirp-li-${chirp.id}`}>
                                 <h6>@ {chirp.name}</h6>

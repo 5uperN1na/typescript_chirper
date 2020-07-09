@@ -27,12 +27,15 @@ class Details extends React.Component<DetailsProps, DetailsState> {
             <section className="row justify-content-center mt-3">
                 <div className="col-6">
 
-                    <h4 className= "text-center"> Name: {this.state.chirp?.name}!!</h4>
-                    <h4 className="text-center"> Chirp: {this.state.chirp?.text}!!</h4>
-
+                    <div className="shadow p-4 mb-4 bg-white">
+                        <h4 className="text-center"> Name: {this.state.chirp?.name}!!</h4>
+                        <h3 className="text-center"> Chirp: {this.state.chirp?.text}!!</h3>
+                    </div>
                     <div className="d-flex align-items-center justify-content-between">
-                        <Link to='/'>&lt;&lt;Go Back</Link>
-                        <Link to={`/admin/${this.state.chirp?.id}`}>&gt;&gt;Edit/Delete Chirp</Link>
+                        <Link to='/' className="btn btn-outline-primary btn-block mt-2 mx-auto w-25">Go Back</Link>
+                        {/* <Link to='/'>&lt;&lt;Go Back</Link> */}
+                        {/* <Link to={`/admin/${this.state.chirp?.id}`}>&gt;&gt;Edit/Delete Chirp</Link> */}
+                        <Link to={`/admin/${this.state.chirp?.id}`} className="btn btn-outline-success btn-block mt-2 mx-auto w-25">Update</Link>
                     </div>
                 </div>
 

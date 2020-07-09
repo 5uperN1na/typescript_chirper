@@ -46,11 +46,11 @@ class Compose extends React.Component<ComposeProps, ComposeState> {
             <section className="row justify-content-center mt-3">
                 <div className="col-md-8">
                     <form className="form-group p-3 border rounded-lg shadow-sm">
-                        <label htmlFor="name"> Name</label>
+                        <label htmlFor="name"> Who you are?</label>
                         <input value={this.state.name} onChange={this.handleNameChange} type="text" className="form-control my-1" />
-                        <label htmlFor="text"> Text</label>
+                        <label htmlFor="text"> Say what?</label>
                         <textarea value={this.state.text} onChange={this.handleTextChange} rows={10} className="form-control my-1" />
-                        <button onClick={this.handleChirpSubmit} className="btn btn-outline-primary btn-block mt-3 mx-auto w-50">Submit</button>
+                        <button onClick={this.handleChirpSubmit} className="btn btn-outline-primary btn-block mt-3 mx-auto w-50">Chirp-it-Out!</button>
 
                     </form>
                 </div>
