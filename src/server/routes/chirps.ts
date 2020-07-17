@@ -1,4 +1,5 @@
 import * as express from 'express';
+import db from '../db';
 import chirpstore from '../utils/chirpstore';
 
 const router = express.Router();
@@ -10,119 +11,146 @@ const router = express.Router();
 
 //let customers = [];
 
-//Get method
-router.get('/:chirpid?', (req, res, next) => {
-    const chirpid = Number(req.params.chirpid)
+//GET route with query reference from routes/chirps.ts
 
-    if (chirpid || chirpid === 0) {
-        const chirp = chirpstore.GetChirp(chirpid);
+router.get('/:id?', async (req, res) => {
+    const id = Number(req.params.id);
+    try {
+        if (id) {
+            //make the one note an object by using [chirp]
+            const [chirp] = await db.chirps.one(id);
+            res.json(chirp);
 
-        //check to see if chirpid exist, if not, returns a response. if it does, it will get that chirp.
-        if (Object.keys(chirp).length === 0) {
-            res.status(404).json({ msg: `chirp ${chirpid} does not exist` });
         } else {
-            res.json({ id: chirpid, ...chirp })
-
+            const chirps = await db.chirps.all();
+            res.json(chirps);
         }
 
-    } else {
-
-        const data = chirpstore.GetChirps();
-        const chirps = Object.keys(data).map((key: any) => ({ id: key, ...data[key] }));
-        chirps.pop();
-        res.json(chirps);
-
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: "Success!", error });
     }
 
-
 });
 
 
-//old GET method
-// router.get('/:id?', (req, res) => {
 
-//     const id = Number(req.params.id)
-//     if (id) {
-//         res.json(chirpstore.GetChirp(id));
-//     } else {
-//         const raw = chirpstore.GetChirps()
-//         const customers = Object.keys(raw).map(key =>{
-//             return{
-//                 id: key,
-//                 comment: raw[key].comment,
-//                 firstname: raw[key].firstname
+//GET route with query reference from routes/chirps.ts
 
-//             }
-//         })
-//         customers.pop();
-//         res.send(customers);
+// router.get('/', async (req, res)=>{
+//     try {
+//         const chirps = await db.chirps.all();
+//         res.json(chirps);
+
+//     }catch (error){
+//         console.log(error);
+//         res.status(500).json({msg: "Testing my code!", error });
 //     }
+
 // });
 
-//old POST method
 
+//Delete
+router.delete('/:id', async (req, res) => {
+    const id = Number(req.params.id);
+    try {
+        await db.chirps.deleteChirp(id);
+        res.json({ msg: "Chirp deleted.", id });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: "Success", error });
+    }
+
+});
+
+
+//Post
+router.post('/', async (req, res) => {
+    const newChirp = req.body;
+    try {
+
+        const cannedResponse = await db.chirps.insert(newChirp.userid, newChirp.chirp);
+        res.status(201).json({ msg: "New chirp inserted", id: cannedResponse.insertID });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: "Success", error });
+    }
+
+});
+
+router.put('/:id', async (req, res) => {
+    const id = Number(req.params.id);
+    const editChirp = req.body;
+    try {
+        const cannedResponse = await db.chirps.edit(editChirp.chirp, id);
+        res.json({msg: "Chirp updated", id, cannedResponse});
+    }catch (error){
+        console.log(error);
+        res.status(500).json({msg: "bad girl", error});
+    }
+
+});
+
+
+
+
+//Half stack GET method
+// router.get('/:chirpid?', (req, res, next) => {
+//     const chirpid = Number(req.params.chirpid)
+
+//     if (chirpid || chirpid === 0) {
+//         const chirp = chirpstore.GetChirp(chirpid);
+
+//         //check to see if chirpid exist, if not, returns a response. if it does, it will get that chirp.
+//         if (Object.keys(chirp).length === 0) {
+//             res.status(404).json({ msg: `chirp ${chirpid} does not exist` });
+//         } else {
+//             res.json({ id: chirpid, ...chirp })
+
+//         }
+
+//     } else {
+
+//         const data = chirpstore.GetChirps();
+//         const chirps = Object.keys(data).map((key: any) => ({ id: key, ...data[key] }));
+//         chirps.pop();
+//         res.json(chirps);
+
+//     }
+
+
+// });
+
+
+//Half Stack POST method
 // router.post('/', (req, res) => {
-//     chirpstore.CreateChirp(req.body);
-//     //res.sendStatus(200);
-//     let customer = {};
-//     customer.firstname = req.body.firstname;
-//     customer.comment = req.body.comment;
-
-
-//     customers.push(customer);
-
-//     return res.send(customer);
+//     const chirpDTO = req.body;
+//     chirpDTO['written_at'] = new Date();
+//     chirpstore.CreateChirp(chirpDTO);
+//     res.status(200).json({ msg: `chirp was added` });
 
 // });
 
 
 
-router.post('/', (req, res) => {
-    const chirpDTO = req.body;
-    chirpDTO['written_at'] = new Date();
-    chirpstore.CreateChirp(chirpDTO);
-    res.status(200).json({ msg: `chirp was added` });
-
-});
-
-
-
-//old DELETE method
-
-// router.delete('/:id?', (req, res) => {
-//     const id = Number(req.params.id)
-//     chirpstore.DeleteChirp(id)
-//     id ? res.send("deleted") : res.sendStatus(404);
+// //Half Stack DELETE method
+// router.delete('/:chirpid', (req, res) => {
+//     const chirpid = Number(req.params.chirpid)
+//     const chirpDTO = req.body;
+//     chirpstore.DeleteChirp(chirpid)
+//     res.status(200).json({ msg: `chirp ${chirpid} deleted`, id: chirpid });
 // });
 
 
-
-//Delete method
-router.delete('/:chirpid', (req, res) => {
-    const chirpid = Number(req.params.chirpid)
-    const chirpDTO = req.body;
-    chirpstore.DeleteChirp(chirpid)
-    res.status(200).json({ msg: `chirp ${chirpid} deleted`, id: chirpid });
-});
-
-
-//old PUT method
-
-// router.put('/:id?', (req, res) => {
-//     const id = Number(req.params.id)
-//     let data = req.body;
-//     chirpstore.UpdateChirp(id, data)
-//     id ? res.send("edited") : res.sendStatus(404);
+// //Half Stack PUT method
+// router.put('/:chirpid', (req, res) => {
+//     const chirpid = Number(req.params.chirpid)
+//     const chirpDTO = req.body;
+//     chirpstore.UpdateChirp(chirpid, chirpDTO)
+//     res.status(200).json({ msg: `chirp ${chirpid} updated`, id: chirpid });
 // });
-
-
-//Put method
-router.put('/:chirpid', (req, res) => {
-    const chirpid = Number(req.params.chirpid)
-    const chirpDTO = req.body;
-    chirpstore.UpdateChirp(chirpid, chirpDTO)
-    res.status(200).json({ msg: `chirp ${chirpid} updated`, id: chirpid });
-});
 
 
 
