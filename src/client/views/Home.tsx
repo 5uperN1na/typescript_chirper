@@ -1,45 +1,88 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import type { IChirp } from '../utils/interfaces';
+import ChirpCard from '../component/ChirpCard';
+import Form from '../component/Form';
 
 const Home: React.FC<HomeProps> = (props) => {
 
     const [chirps, setChirps] = useState<IChirp[]>([]);
 
+    const getChirps = async () => {
+        const res = await fetch('/api/chirps');
+        const chirps = await res.json();
+        setChirps(chirps);
+    };
+
     useEffect(() => {
-        const getChirps = async () => {
-            const res = await fetch('/api/chirps');
-            const chirps = await res.json();
-            setChirps(chirps);
-        };
         getChirps();
+
     }, []);
+
+
 
     return (
         <main className="container">
             <section className="row justify-content-center mt-3">
-                <div className="col-12">
+
+                <Form pizza={getChirps} />
+
+            </section>
+
+            <section className="row justify-content-center mt-3">
+
+                {chirps.map(chirp => (
+                    <ChirpCard key={`chirp-card-${chirp.id}`} chirp={chirp} />
+
+                ))}
+
+
+
+
+                {/* 
+                Getting chirps and mapping them into a list */}
+                {/* <div className="col-8">
                     <ul className="list-group list-group-flush">
                         {chirps.map((chirp) => (
-                             <li 
-                            
-                            className="list-group-item list-group=item-info py-4 d-flex justify-content-between align-items-center" 
-                            key={`chirp-key-${chirp.id}`}>
+                            <li
+
+                                className="list-group-item list-group-item-info py-4 d-flex justify-content-between align-items-center"
+                                key={`chirp-key-${chirp.id}`}>
                                 <span>
-                                    {chirp.name}{chirp.chirp}
+                                    <b>{chirp.name}:</b> </span>
+                                <span className="ml-2">
+                                    {chirp.chirp}
                                 </span>
- 
+
+
                             </li>
                         ))}
                     </ul>
-                </div>
+                </div> */}
+
+
+
+
+
+
+
+
+
+
+
+
+
             </section>
 
         </main>
     );
 }
 
-interface HomeProps { }
+interface HomeProps {
+    
+
+
+}
 
 export default Home;
 

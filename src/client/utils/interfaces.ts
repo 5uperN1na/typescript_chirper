@@ -7,6 +7,12 @@ export interface IChirp {
     name: string;
 }
 
+export interface IUser {
+    id: number;
+    name: string;
+}
+
+
 
 
 

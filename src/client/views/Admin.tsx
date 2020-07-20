@@ -61,7 +61,7 @@ class Admin extends React.Component<AdminProps, AdminState> {
     async componentDidMount() {
         const res = await fetch('/api/chirps/' + this.props.match.params.chirpid);
         const chirp: IChirp = await res.json();
-        this.setState({ name: chirp.name, text: chirp.text });
+        // this.setState({ name: chirp.name, text: chirp.text });
 
     }
 

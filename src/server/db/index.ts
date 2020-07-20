@@ -1,5 +1,6 @@
 import * as mysql from 'mysql';
 import chirps from './queries/chirps';
+import users from './queries/users';
 import { rejects } from 'assert';
 import { resolve } from 'path';
 
@@ -123,5 +124,6 @@ export const Query = <T = any> (query: string, values?: any) => {
 
 
  export default{
-     chirps
+     chirps,
+     users
  }
